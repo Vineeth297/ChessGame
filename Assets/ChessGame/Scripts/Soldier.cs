@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class Soldier : MonoBehaviour, IPieceMover
+public class Soldier :MonoBehaviour
 {
 	public bool isWhite;
-	public void MoveThePiece()
+	public void MoveThePiece(GameObject finalCheckBox, Transform selectedTransform)
 	{
 		
 	}
-
+	
 }

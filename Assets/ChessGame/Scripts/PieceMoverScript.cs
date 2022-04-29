@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class PieceMoverScript : MonoBehaviour
 {
@@ -16,16 +17,13 @@ public class PieceMoverScript : MonoBehaviour
 
 	public List<GameObject> checkBoxes;
 
-	public Vector3[] checkBoxPositions = new Vector3[64];
-	
-	private List<List<GameObject>> _checkBoxPositions;
-	private Vector3[,] _boxes = new Vector3[8,8];
+	public List<List<GameObject>> checkBoxPositions;
 
 	private void Start()
 	{
 		_camera = Camera.main;
-		_checkBoxPositions = new List<List<GameObject>>();
-		FillTheBoxes();
+		checkBoxPositions = new List<List<GameObject>>();
+	//	FillTheBoxes();
 	}
 
 	private void Update()
@@ -42,7 +40,11 @@ public class PieceMoverScript : MonoBehaviour
 				if(hit.collider.CompareTag("Piece")) return;
 				finalTransform = hit.collider.transform;
 				//SoldierFunction(finalTransform);
-				Bishop(finalTransform.gameObject);
+				//Soldier(finalTransform.gameObject);
+				var chessPiece = selectedTransform.GetComponent<IPieceMover>();
+				chessPiece?.MoveThePiece(finalTransform.gameObject);
+				print(chessPiece);
+				//selectedTransform.GetComponent<Pawn>().MoveThePiece(finalTransform.gameObject);
 			}
 
 			if (!pieceSelected)
@@ -199,12 +201,12 @@ public class PieceMoverScript : MonoBehaviour
 		int finalIndex;
 		if (currentColumn == finalColumn)
 		{
-			checkBox = _checkBoxPositions[moveDirectionIndex][finalColumn];
+			checkBox = checkBoxPositions[moveDirectionIndex][finalColumn];
 			finalIndex = finalRow;
 		}
 		else
 		{
-			checkBox = _checkBoxPositions[finalRow][moveDirectionIndex];
+			checkBox = checkBoxPositions[finalRow][moveDirectionIndex];
 			finalIndex = finalColumn;
 		}
 		
@@ -215,12 +217,12 @@ public class PieceMoverScript : MonoBehaviour
 			if (moveDirectionIndex == finalIndex - 1)
 			{
 				//check for final indexes occupancy
-				var finalCheckBox = _checkBoxPositions[finalRow][finalColumn];
+				var finalCheckBox = checkBoxPositions[finalRow][finalColumn];
 				ValidateOccupancyAndMove(finalCheckBox.transform);
 			}
 			else if (moveDirectionIndex == finalIndex + 1)
 			{
-				var finalCheckBox = _checkBoxPositions[finalRow][finalColumn];
+				var finalCheckBox = checkBoxPositions[finalRow][finalColumn];
 				ValidateOccupancyAndMove(finalCheckBox.transform);
 			}
 			else return false;
@@ -257,12 +259,12 @@ public class PieceMoverScript : MonoBehaviour
 				var maxIterationNumber = finalColumn - currentColumn;
 				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					var checkBox = _checkBoxPositions[currentRow + iteration][currentColumn + iteration];
+					var checkBox = checkBoxPositions[currentRow + iteration][currentColumn + iteration];
 					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
 						if (currentRow + iteration == finalRow - 1)
 						{
-							ValidateOccupancyAndMove(_checkBoxPositions[finalRow][finalColumn].transform);
+							ValidateOccupancyAndMove(checkBoxPositions[finalRow][finalColumn].transform);
 						}
 						else continue;
 					}
@@ -281,12 +283,12 @@ public class PieceMoverScript : MonoBehaviour
 				var maxIterationNumber = currentColumn - finalColumn;
 				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					var checkBox = _checkBoxPositions[currentRow - iteration][currentColumn - iteration];
+					var checkBox = checkBoxPositions[currentRow - iteration][currentColumn - iteration];
 					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
 						if (currentRow - iteration == finalRow + 1)
 						{
-							ValidateOccupancyAndMove(_checkBoxPositions[finalRow][finalColumn].transform);
+							ValidateOccupancyAndMove(checkBoxPositions[finalRow][finalColumn].transform);
 						}
 						else continue;
 					}
@@ -305,12 +307,12 @@ public class PieceMoverScript : MonoBehaviour
 				var maxIterationNumber = currentColumn - finalColumn;
 				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					var checkBox = _checkBoxPositions[currentRow + iteration][currentColumn - iteration];
+					var checkBox = checkBoxPositions[currentRow + iteration][currentColumn - iteration];
 					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
 						if (currentRow + iteration == finalRow - 1 && currentColumn - iteration == finalColumn + 1)
 						{
-							ValidateOccupancyAndMove(_checkBoxPositions[finalRow][finalColumn].transform);
+							ValidateOccupancyAndMove(checkBoxPositions[finalRow][finalColumn].transform);
 						}
 						else continue;
 					}
@@ -329,12 +331,12 @@ public class PieceMoverScript : MonoBehaviour
 				var maxIterationNumber = finalColumn - currentColumn;
 				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					var checkBox = _checkBoxPositions[currentRow - iteration][currentColumn + iteration];
+					var checkBox = checkBoxPositions[currentRow - iteration][currentColumn + iteration];
 					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
 						if (currentRow - iteration == finalRow + 1 && currentColumn + iteration == finalColumn - 1)
 						{
-							ValidateOccupancyAndMove(_checkBoxPositions[finalRow][finalColumn].transform);
+							ValidateOccupancyAndMove(checkBoxPositions[finalRow][finalColumn].transform);
 						}
 						else continue;
 					}
@@ -359,7 +361,7 @@ public class PieceMoverScript : MonoBehaviour
 				Debug.DrawRay(newList[j].transform.position, Vector3.up, Color.red, 2f);
 				//print(newList[j]);
 			}
-			_checkBoxPositions.Add(newList);
+			checkBoxPositions.Add(newList);
 		}
 	}
 
@@ -367,7 +369,7 @@ public class PieceMoverScript : MonoBehaviour
 	{
 		var rowNumber = -1;
 		var columnNumber = -1;
-		foreach (var column in _checkBoxPositions)
+		foreach (var column in checkBoxPositions)
 		{
 			rowNumber++;
 			
