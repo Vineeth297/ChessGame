@@ -3,15 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Position
+  - CornerCheckBox
+  - Piece
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - CheckBox
   - Water
   - UI
-  - 
+  - Piece
   - 
   - 
   - 
