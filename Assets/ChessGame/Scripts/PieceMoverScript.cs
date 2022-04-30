@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class PieceMoverScript : MonoBehaviour
 {
@@ -16,16 +17,13 @@ public class PieceMoverScript : MonoBehaviour
 
 	public List<GameObject> checkBoxes;
 
-	public Vector3[] checkBoxPositions = new Vector3[64];
-	
-	private List<List<GameObject>> _checkBoxPositions;
-	private Vector3[,] _boxes = new Vector3[8,8];
+	public List<List<GameObject>> checkBoxPositions;
 
 	private void Start()
 	{
 		_camera = Camera.main;
-		_checkBoxPositions = new List<List<GameObject>>();
-		FillTheBoxes();
+		checkBoxPositions = new List<List<GameObject>>();
+	//	FillTheBoxes();
 	}
 
 	private void Update()
@@ -42,7 +40,11 @@ public class PieceMoverScript : MonoBehaviour
 				if(hit.collider.CompareTag("Piece")) return;
 				finalTransform = hit.collider.transform;
 				//SoldierFunction(finalTransform);
-				Bishop(finalTransform.gameObject);
+				//Soldier(finalTransform.gameObject);
+				var chessPiece = selectedTransform.GetComponent<IPieceMover>();
+				chessPiece?.MoveThePiece(finalTransform.gameObject);
+				print(chessPiece);
+				//selectedTransform.GetComponent<Pawn>().MoveThePiece(finalTransform.gameObject);
 			}
 
 			if (!pieceSelected)
@@ -55,7 +57,8 @@ public class PieceMoverScript : MonoBehaviour
 			}
 		}
 	}
-	//Soldier Move
+	
+	//Soldier Moves
 	private void Soldier(GameObject finalCheckBox)
 	{
 		//Get the CurrentIndex
@@ -97,7 +100,7 @@ public class PieceMoverScript : MonoBehaviour
 			InvalidMove();
 	}
 	
-	//Rook Move
+	//Rook Moves
 	private void Rook(GameObject finalCheckBox)
 	{
 		//Vertical Move
@@ -133,7 +136,7 @@ public class PieceMoverScript : MonoBehaviour
 					else
 						continue;
 				}
-			}	
+			}
 			else
 			{
 				if (finalRow == currentRow - 1)
@@ -177,7 +180,7 @@ public class PieceMoverScript : MonoBehaviour
 					ValidateOccupancyAndMove(finalCheckBox.transform);
 					return;
 				}
-				for (var column = currentColumn - 1; column > finalColumn; column--)
+				for (var column = currentRow - 1; column > finalColumn; column--)
 				{
 					if (IfAllCheckBoxesInThePathAreEmpty(column, finalColumn, finalRow,currentRow,currentColumn))
 						return;
@@ -198,12 +201,12 @@ public class PieceMoverScript : MonoBehaviour
 		int finalIndex;
 		if (currentColumn == finalColumn)
 		{
-			checkBox = _checkBoxPositions[moveDirectionIndex][finalColumn];
+			checkBox = checkBoxPositions[moveDirectionIndex][finalColumn];
 			finalIndex = finalRow;
 		}
 		else
 		{
-			checkBox = _checkBoxPositions[finalRow][moveDirectionIndex];
+			checkBox = checkBoxPositions[finalRow][moveDirectionIndex];
 			finalIndex = finalColumn;
 		}
 		
@@ -214,12 +217,12 @@ public class PieceMoverScript : MonoBehaviour
 			if (moveDirectionIndex == finalIndex - 1)
 			{
 				//check for final indexes occupancy
-				var finalCheckBox = _checkBoxPositions[finalRow][finalColumn];
+				var finalCheckBox = checkBoxPositions[finalRow][finalColumn];
 				ValidateOccupancyAndMove(finalCheckBox.transform);
 			}
 			else if (moveDirectionIndex == finalIndex + 1)
 			{
-				var finalCheckBox = _checkBoxPositions[finalRow][finalColumn];
+				var finalCheckBox = checkBoxPositions[finalRow][finalColumn];
 				ValidateOccupancyAndMove(finalCheckBox.transform);
 			}
 			else return false;
@@ -227,7 +230,7 @@ public class PieceMoverScript : MonoBehaviour
 		return true;
 	}
 
-	//Bishop Move
+	//Bishop Moves
 	private void Bishop(GameObject finalCheckBox)
 	{
 		SearchTheBoard(out var currentRow,out var currentColumn,selectedTransform.parent.gameObject);
@@ -244,36 +247,109 @@ public class PieceMoverScript : MonoBehaviour
 			return;
 		}
 
-		if (currentRow > finalRow && currentColumn > finalColumn)
+		if (currentRow < finalRow && currentColumn < finalColumn)
 		{
-			var maxIterationNumber = finalRow - currentRow;
-			for (var i = 1; i <= maxIterationNumber; i++)
+			if (currentRow + 1 == finalRow)
 			{
-				//check for empty spaces and move
-				var nextCheckBox = _checkBoxPositions[currentRow + i][currentColumn + i];
-				if (!nextCheckBox.GetComponent<CheckBox>().isOccupied)
+				ValidateOccupancyAndMove(finalCheckBox.transform);
+				return;
+			}
+			else
+			{
+				var maxIterationNumber = finalColumn - currentColumn;
+				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					if (currentRow + i == finalRow && currentColumn + i == finalColumn)
+					var checkBox = checkBoxPositions[currentRow + iteration][currentColumn + iteration];
+					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
-						//check for final indexes occupancy
-						var checkBox = _checkBoxPositions[finalRow][finalColumn];
-						ValidateOccupancyAndMove(checkBox.transform);
+						if (currentRow + iteration == finalRow - 1)
+						{
+							ValidateOccupancyAndMove(checkBoxPositions[finalRow][finalColumn].transform);
+						}
+						else continue;
 					}
-					else if (currentRow - i == finalRow && currentColumn - i == finalColumn)
-					{
-						var checkBox = _checkBoxPositions[finalRow][finalColumn];
-						ValidateOccupancyAndMove(checkBox.transform);
-					}	
-				}
-				else
-				{
-					InvalidMove();
-					return;
-				}
-				
+				}	
 			}
 		}
+		else if(currentRow > finalRow && currentColumn > finalColumn)
+		{
+			if (currentRow - 1 == finalRow)
+			{
+				ValidateOccupancyAndMove(finalCheckBox.transform);
+				return;
+			}
+			else
+			{
+				var maxIterationNumber = currentColumn - finalColumn;
+				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+				{
+					var checkBox = checkBoxPositions[currentRow - iteration][currentColumn - iteration];
+					if (!checkBox.GetComponent<CheckBox>().isOccupied)
+					{
+						if (currentRow - iteration == finalRow + 1)
+						{
+							ValidateOccupancyAndMove(checkBoxPositions[finalRow][finalColumn].transform);
+						}
+						else continue;
+					}
+				}	
+			}
+		}
+		else if (currentRow < finalRow && currentColumn > finalColumn)
+		{
+			if (currentRow + 1 == finalRow && currentColumn - 1 == finalColumn)
+			{
+				ValidateOccupancyAndMove(finalCheckBox.transform);
+				return;
+			}
+			else
+			{
+				var maxIterationNumber = currentColumn - finalColumn;
+				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+				{
+					var checkBox = checkBoxPositions[currentRow + iteration][currentColumn - iteration];
+					if (!checkBox.GetComponent<CheckBox>().isOccupied)
+					{
+						if (currentRow + iteration == finalRow - 1 && currentColumn - iteration == finalColumn + 1)
+						{
+							ValidateOccupancyAndMove(checkBoxPositions[finalRow][finalColumn].transform);
+						}
+						else continue;
+					}
+				}
+			}
+		}
+		else if(currentRow > finalRow && currentColumn < finalColumn)
+		{
+			if (currentRow - 1 == finalRow && currentColumn + 1 == finalColumn)
+			{
+				ValidateOccupancyAndMove(finalCheckBox.transform);
+				return;
+			}
+			else
+			{
+				var maxIterationNumber = finalColumn - currentColumn;
+				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+				{
+					var checkBox = checkBoxPositions[currentRow - iteration][currentColumn + iteration];
+					if (!checkBox.GetComponent<CheckBox>().isOccupied)
+					{
+						if (currentRow - iteration == finalRow + 1 && currentColumn + iteration == finalColumn - 1)
+						{
+							ValidateOccupancyAndMove(checkBoxPositions[finalRow][finalColumn].transform);
+						}
+						else continue;
+					}
+				}
+			}
+		}
+		else
+		{
+			InvalidMove();
+			return;
+		}
 	}
+	
 	private void FillTheBoxes()
 	{
 		for (var i = 0; i < 8; i++)
@@ -285,7 +361,7 @@ public class PieceMoverScript : MonoBehaviour
 				Debug.DrawRay(newList[j].transform.position, Vector3.up, Color.red, 2f);
 				//print(newList[j]);
 			}
-			_checkBoxPositions.Add(newList);
+			checkBoxPositions.Add(newList);
 		}
 	}
 
@@ -293,15 +369,15 @@ public class PieceMoverScript : MonoBehaviour
 	{
 		var rowNumber = -1;
 		var columnNumber = -1;
-		foreach (var column in _checkBoxPositions)
+		foreach (var column in checkBoxPositions)
 		{
 			rowNumber++;
 			
-			var index = column.IndexOf(checkBox);
+			var idx = column.IndexOf(checkBox);
 			
-			if(index == -1) continue;
+			if(idx == -1) continue;
 
-			columnNumber = index;
+			columnNumber = idx;
 			break;
 		}
 
