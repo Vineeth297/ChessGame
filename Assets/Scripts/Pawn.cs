@@ -9,7 +9,7 @@ public class Pawn : MonoBehaviour,IPieceMover
 
 	public void MoveThePiece(GameObject finalCheckBox)
 	{
-		print("SoldierPieceMoved");
+		print("PawnMoved");
 		PawnMove(finalCheckBox);
 	}
 
@@ -51,6 +51,6 @@ public class Pawn : MonoBehaviour,IPieceMover
 			_chessBoard.KillTheEnemy(finalCheckBox.transform);
 		}
 		else
-			_chessBoard.InvalidMove();
+			ChessBoardClass.InvalidMove();
 	}
 }

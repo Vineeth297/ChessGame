@@ -9,7 +9,7 @@ public class Bishop : MonoBehaviour, IPieceMover
 
     public void MoveThePiece(GameObject finalCheckBox)
     {
-        print("SoldierPieceMoved");
+        print("BishopMoved");
         BishopMove(finalCheckBox);
     }
     
@@ -127,7 +127,7 @@ public class Bishop : MonoBehaviour, IPieceMover
 		}
 		else
 		{
-			_chessBoard.InvalidMove();
+			ChessBoardClass.InvalidMove();
 			return;
 		}
 	}

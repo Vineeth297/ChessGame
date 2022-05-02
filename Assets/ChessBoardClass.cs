@@ -8,7 +8,6 @@ public class ChessBoardClass : MonoBehaviour
 	public PieceMoverScript playerInput;
 	
 	public List<GameObject> checkBoxes;
-
 	public List<List<GameObject>> checkBoxPositions;
 
 	private void Awake()
@@ -113,5 +112,5 @@ public class ChessBoardClass : MonoBehaviour
 			InvalidMove();
 	}
 
-	public void InvalidMove() => print("Invalid Move");
+	public static void InvalidMove() => print("Invalid Move");
 }

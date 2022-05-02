@@ -9,7 +9,7 @@ public class Knight : MonoBehaviour, IPieceMover
 
     public void MoveThePiece(GameObject finalCheckBox)
     {
-        print("SoldierPieceMoved");
+        print("KnightMoved");
         KnightMove(finalCheckBox);
     }
 

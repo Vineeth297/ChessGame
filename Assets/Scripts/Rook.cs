@@ -9,7 +9,7 @@ public class Rook : MonoBehaviour,IPieceMover
 	
 	public void MoveThePiece(GameObject finalCheckBox)
 	{
-		print("RookPieceMoved");
+		print("RookMoved");
 		RookMove(finalCheckBox);
 	}
 	
@@ -103,7 +103,7 @@ public class Rook : MonoBehaviour,IPieceMover
 		}
 		else
 		{
-			_chessBoard.InvalidMove();
+			ChessBoardClass.InvalidMove();
 		}
 	}
 

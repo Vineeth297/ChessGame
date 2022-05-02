@@ -23,12 +23,17 @@ public class PieceMoverScript : MonoBehaviour
 		
 		if (!Input.GetMouseButtonDown(0)) return;
 		
-		var ray =  _camera.ScreenPointToRay(Input.mousePosition);
-		
+		SelectThePiece();
+	}
+
+	private void SelectThePiece()
+	{
+		var ray = _camera.ScreenPointToRay(Input.mousePosition);
+
 		if (!Physics.Raycast(ray, out var hit, 50f, layerMask)) return;
 		if (pieceSelected)
 		{
-			if(hit.collider.CompareTag("WhitePiece") || hit.collider.CompareTag("BlackPiece")) return;
+			if (hit.collider.CompareTag("WhitePiece") || hit.collider.CompareTag("BlackPiece")) return;
 			finalTransform = hit.collider.transform;
 			//SoldierFunction(finalTransform);
 			//Soldier(finalTransform.gameObject);
