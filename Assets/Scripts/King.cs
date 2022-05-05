@@ -1,8 +1,8 @@
-using System.Collections;
+	using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class King : MonoBehaviour
+public class King : MonoBehaviour, IPieceMover
 {
 	private ChessBoardClass _chessBoard;
 	private void Start() => _chessBoard = ChessBoardClass.ChessBoard;
@@ -29,6 +29,25 @@ public class King : MonoBehaviour
 			return;
 		}
 		
+		if (finalRow == currentRow - 1 && finalColumn == currentColumn - 1 ||
+		    finalRow == currentRow + 1 && finalColumn == currentColumn + 1 ||
+		    finalRow == currentRow + 1 && finalColumn == currentColumn - 1 ||
+		    finalRow == currentRow - 1 && finalColumn == currentColumn + 1)
+		{
+			_chessBoard.ValidateOccupancyAndMove(finalCheckBox.transform);
+		}
+		else if (finalColumn == currentColumn && (finalRow == currentRow + 1 || finalRow == currentRow - 1))
+		{
+			_chessBoard.ValidateOccupancyAndMove(finalCheckBox.transform);
+		}
+		else if (finalRow == currentRow && (finalColumn == currentColumn + 1 || finalColumn == currentColumn - 1))
+		{
+			_chessBoard.ValidateOccupancyAndMove(finalCheckBox.transform);
+		}
+		else
+		{
+			ChessBoardClass.InvalidMove();
+		}
 		
 	}
 }
