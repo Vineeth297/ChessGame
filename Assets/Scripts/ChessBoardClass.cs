@@ -67,7 +67,7 @@ public class ChessBoardClass : MonoBehaviour
 			MoveThePiece(finalMove);
 		}
 		else
-			KillTheEnemy(finalMove);
+			MoveOrKillTheEnemy(finalMove);
 	}
 
 	private void MoveThePiece(Transform finalMove)
@@ -86,7 +86,7 @@ public class ChessBoardClass : MonoBehaviour
 		playerInput.finalTransform = null;
 	}
 
-	public void KillTheEnemy(Transform finalMove)
+	public void MoveOrKillTheEnemy(Transform finalMove)
 	{
 		if (finalMove.childCount == 2)
 		{

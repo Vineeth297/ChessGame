@@ -36,128 +36,189 @@ public class Queen : MonoBehaviour, IPieceMover
 		if (finalRow >= currentRow + 1 && finalColumn >= currentColumn + 1)
 		{
 			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
 			{
 				var checkBox = _chessBoard.checkBoxPositions[currentRow + iteration][currentColumn + iteration];
 				if (!checkBox.GetComponent<CheckBox>().isOccupied)
 				{
-					if (currentRow + iteration == finalRow - 1 && currentColumn + iteration == finalColumn - 1)
+					if (currentRow + iteration == finalRow - 1 && currentColumn + iteration == finalColumn - 1 ||
+					    currentRow + iteration == finalRow && currentColumn + iteration == finalColumn)
 					{
 						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
 					}
 					else continue;
+				}
+				else if(currentRow + iteration == finalRow && currentColumn + iteration == finalColumn)
+				{
+					_chessBoard.MoveOrKillTheEnemy(finalCheckBox.transform);
+				}
+				else
+				{
+					ChessBoardClass.InvalidMove();
+					return;
 				}
 			}
 		}
 		else if (finalRow <= currentRow - 1 && finalColumn <= currentColumn - 1)
 		{
 			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
 			{
 				var checkBox = _chessBoard.checkBoxPositions[currentRow - iteration][currentColumn - iteration];
 				if (!checkBox.GetComponent<CheckBox>().isOccupied)
 				{
-					if (currentRow - iteration == finalRow + 1 && currentColumn - iteration == finalColumn + 1)
+					if (currentRow - iteration == finalRow + 1 && currentColumn - iteration == finalColumn + 1 ||
+					    currentRow - iteration == finalRow && currentColumn - iteration == finalColumn)
 					{
 						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
 					}
 					else continue;
+				}
+				else if(currentRow - iteration == finalRow && currentColumn - iteration == finalColumn)
+				{
+					_chessBoard.MoveOrKillTheEnemy(finalCheckBox.transform);
+				}
+				else
+				{
+					ChessBoardClass.InvalidMove();
+					return;
 				}
 			}
 		}
 		else if (finalRow <= currentRow - 1 && finalColumn >= currentColumn + 1)
 		{
 			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
 			{
 				var checkBox = _chessBoard.checkBoxPositions[currentRow - iteration][currentColumn + iteration];
 				if (!checkBox.GetComponent<CheckBox>().isOccupied)
 				{
-					if (currentRow - iteration == finalRow + 1 && currentColumn + iteration == finalColumn - 1)
+					if (currentRow - iteration == finalRow + 1 && currentColumn + iteration == finalColumn - 1 ||
+					    currentRow - iteration == finalRow && currentColumn + iteration == finalColumn)
 					{
 						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
 					}
 					else continue;
+				}
+				else if(currentRow - iteration == finalRow && currentColumn + iteration == finalColumn)
+				{
+					_chessBoard.MoveOrKillTheEnemy(finalCheckBox.transform);
+				}
+				else
+				{
+					ChessBoardClass.InvalidMove();
+					return;
 				}
 			}
 		}
 		else if (finalRow >= currentRow + 1 && finalColumn <= currentColumn - 1)
 		{
 			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
 			{
 				var checkBox = _chessBoard.checkBoxPositions[currentRow + iteration][currentColumn - iteration];
 				if (!checkBox.GetComponent<CheckBox>().isOccupied)
 				{
-					if (currentRow + iteration == finalRow - 1 && currentColumn - iteration == finalColumn + 1)
+					print("Entered The Loop");
+					if (currentRow + iteration == finalRow - 1 && currentColumn - iteration == finalColumn + 1 ||
+					    currentRow + iteration == finalRow && currentColumn - iteration == finalColumn)
 					{
 						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
 					}
 					else continue;
+				}
+				else if(currentRow + iteration == finalRow && currentColumn - iteration == finalColumn)
+				{
+					_chessBoard.MoveOrKillTheEnemy(finalCheckBox.transform);
+				}
+				else
+				{
+					ChessBoardClass.InvalidMove();
+					return;
 				}
 			}
 		}
 		else if (finalColumn == currentColumn && finalRow >= currentRow + 1)
 		{
-			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+			var maxIterationNumber = Mathf.Abs(finalRow - currentRow);
+			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
 			{
 				var checkBox = _chessBoard.checkBoxPositions[currentRow + iteration][currentColumn];
 				if (!checkBox.GetComponent<CheckBox>().isOccupied)
 				{
-					if (currentRow + iteration == finalRow - 1)
+					if (currentRow + iteration == finalRow - 1 || currentRow + iteration == finalRow)
 					{
 						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
 					}
 					else continue;
 				}
+				else
+				{
+					ChessBoardClass.InvalidMove();
+					return;
+				}
 			}
 		}
 		else if (finalColumn == currentColumn && finalRow <= currentRow - 1)
 		{
-			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+			var maxIterationNumber = Mathf.Abs(finalRow - currentRow);
+			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
 			{
 				var checkBox = _chessBoard.checkBoxPositions[currentRow - iteration][currentColumn];
 				if (!checkBox.GetComponent<CheckBox>().isOccupied)
 				{
-					if (currentRow - iteration == finalRow + 1)
+					if (currentRow - iteration == finalRow + 1 || currentRow - iteration == finalRow)
 					{
 						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
 					}
 					else continue;
+				}
+				else
+				{
+					ChessBoardClass.InvalidMove();
+					return;
 				}
 			}
 		}
 		else if (finalRow == currentRow && finalColumn >= currentColumn + 1)
 		{
 			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
 			{
 				var checkBox = _chessBoard.checkBoxPositions[currentRow][currentColumn + iteration];
 				if (!checkBox.GetComponent<CheckBox>().isOccupied)
 				{
-					if (currentColumn + iteration == finalColumn - 1)
+					if (currentColumn + iteration == finalColumn - 1 || currentColumn + iteration == finalColumn)
 					{
 						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
 					}
 					else continue;
+				}
+				else
+				{
+					ChessBoardClass.InvalidMove();
+					return;
 				}
 			}
 		}
 		else if (finalRow == currentRow && finalColumn <= currentColumn - 1)
 		{
 			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration < maxIterationNumber; iteration++)
+			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
 			{
 				var checkBox = _chessBoard.checkBoxPositions[currentRow][currentColumn - iteration];
 				if (!checkBox.GetComponent<CheckBox>().isOccupied)
 				{
-					if (currentColumn - iteration == finalColumn + 1)
+					if (currentColumn - iteration == finalColumn + 1 || currentColumn - iteration == finalColumn)
 					{
 						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
 					}
 					else continue;
+				}
+				else
+				{
+					ChessBoardClass.InvalidMove();
+					return;
 				}
 			}
 		}

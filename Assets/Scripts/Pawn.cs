@@ -48,7 +48,7 @@ public class Pawn : MonoBehaviour,IPieceMover
 				 (finalRow == killMove2Row && finalColumn == killMove2Column))
 		{
 			//if the positions are occupied by enemy => kill
-			_chessBoard.KillTheEnemy(finalCheckBox.transform);
+			_chessBoard.MoveOrKillTheEnemy(finalCheckBox.transform);
 		}
 		else
 			ChessBoardClass.InvalidMove();
