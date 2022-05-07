@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bishop : MonoBehaviour, IPieceMover
@@ -7,12 +5,8 @@ public class Bishop : MonoBehaviour, IPieceMover
     private ChessBoardClass _chessBoard;
     private void Start() => _chessBoard = ChessBoardClass.ChessBoard;
 
-    public void MoveThePiece(GameObject finalCheckBox)
-    {
-        print("BishopMoved");
-        BishopMove(finalCheckBox);
-    }
-    
+    public void MoveThePiece(GameObject finalCheckBox) => BishopMove(finalCheckBox);
+
     private void BishopMove(GameObject finalCheckBox)
 	{
 		_chessBoard.SearchTheBoard(out var currentRow,out var currentColumn,_chessBoard.playerInput.selectedTransform.parent.gameObject);
@@ -31,95 +25,112 @@ public class Bishop : MonoBehaviour, IPieceMover
 
 		if (finalRow >= currentRow + 1 && finalColumn >= currentColumn + 1)
 		{
-			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
+			if (currentRow + 1 == finalRow && currentColumn + 1 == finalColumn)
+				_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+			else
 			{
-				var checkBox = _chessBoard.checkBoxPositions[currentRow + iteration][currentColumn + iteration];
-				if (!checkBox.GetComponent<CheckBox>().isOccupied)
+				var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
+				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					if (currentRow + iteration == finalRow - 1 && currentColumn + iteration == finalColumn - 1 ||
-					    currentRow + iteration == finalRow && currentColumn + iteration == finalColumn)
+					var checkBox = _chessBoard.checkBoxPositions[currentRow + iteration][currentColumn + iteration];
+					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
-						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+						if (currentRow + iteration == finalRow - 1 && currentColumn + iteration == finalColumn - 1 ||
+						    currentRow + iteration == finalRow && currentColumn + iteration == finalColumn)
+						{
+							_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+						}
 					}
-					else continue;
-				}
-				else
-				{
-					ChessBoardClass.InvalidMove();
-					return;
+					else
+					{
+						_chessBoard.InvalidMove();
+						return;
+					}	
 				}
 			}
 		}
 		else if (finalRow <= currentRow - 1 && finalColumn <= currentColumn - 1)
 		{
-			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
+			if (currentRow - 1 == finalRow && currentColumn - 1 == finalColumn)
+				_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+			else
 			{
-				var checkBox = _chessBoard.checkBoxPositions[currentRow - iteration][currentColumn - iteration];
-				if (!checkBox.GetComponent<CheckBox>().isOccupied)
+				var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
+				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					if (currentRow - iteration == finalRow + 1 && currentColumn - iteration == finalColumn + 1 ||
-					    currentRow - iteration == finalRow && currentColumn - iteration == finalColumn)
+					var checkBox = _chessBoard.checkBoxPositions[currentRow - iteration][currentColumn - iteration];
+					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
-						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+						if (currentRow - iteration == finalRow + 1 && currentColumn - iteration == finalColumn + 1 ||
+						    currentRow - iteration == finalRow && currentColumn - iteration == finalColumn)
+						{
+							_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+						}
 					}
-					else continue;
-				}
-				else
-				{
-					ChessBoardClass.InvalidMove();
-					return;
+					else
+					{
+						_chessBoard.InvalidMove();
+						return;
+					}
 				}
 			}
+			
 		}
 		else if (finalRow <= currentRow - 1 && finalColumn >= currentColumn + 1)
 		{
-			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
+			if (currentRow - 1 == finalRow && currentColumn + 1 == finalColumn)
+				_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+			else
 			{
-				var checkBox = _chessBoard.checkBoxPositions[currentRow - iteration][currentColumn + iteration];
-				if (!checkBox.GetComponent<CheckBox>().isOccupied)
+				var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
+				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					if (currentRow - iteration == finalRow + 1 && currentColumn + iteration == finalColumn - 1 ||
-					    currentRow - iteration == finalRow && currentColumn + iteration == finalColumn)
+					var checkBox = _chessBoard.checkBoxPositions[currentRow - iteration][currentColumn + iteration];
+					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
-						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+						if (currentRow - iteration == finalRow + 1 && currentColumn + iteration == finalColumn - 1 ||
+						    currentRow - iteration == finalRow && currentColumn + iteration == finalColumn)
+						{
+							_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+						}
 					}
-					else continue;
-				}
-				else
-				{
-					ChessBoardClass.InvalidMove();
-					return;
+					else
+					{
+						_chessBoard.InvalidMove();
+						return;
+					}
 				}
 			}
 		}
 		else if (finalRow >= currentRow + 1 && finalColumn <= currentColumn - 1)
 		{
-			var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
-			for (var iteration = 1; iteration <= maxIterationNumber; iteration++)
+			if (currentRow + 1 == finalRow && currentColumn - 1 == finalColumn)
+				_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+			else
 			{
-				var checkBox = _chessBoard.checkBoxPositions[currentRow + iteration][currentColumn - iteration];
-				if (!checkBox.GetComponent<CheckBox>().isOccupied)
+				var maxIterationNumber = Mathf.Abs(finalColumn - currentColumn);
+				for (var iteration = 1; iteration < maxIterationNumber; iteration++)
 				{
-					if (currentRow + iteration == finalRow - 1 && currentColumn - iteration == finalColumn + 1 ||
-					    currentRow + iteration == finalRow && currentColumn - iteration == finalColumn)
+					var checkBox = _chessBoard.checkBoxPositions[currentRow + iteration][currentColumn - iteration];
+					if (!checkBox.GetComponent<CheckBox>().isOccupied)
 					{
-						_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+						if (currentRow + iteration == finalRow - 1 && currentColumn - iteration == finalColumn + 1 ||
+						    currentRow + iteration == finalRow && currentColumn - iteration == finalColumn)
+						{
+							_chessBoard.ValidateOccupancyAndMove(_chessBoard.checkBoxPositions[finalRow][finalColumn].transform);
+						}
 					}
-					else continue;
-				}
-				else
-				{
-					ChessBoardClass.InvalidMove();
-					return;
-				}
+					else
+					{
+						_chessBoard.InvalidMove();
+						return;
+					}
+				}	
 			}
 		}
 		else
 		{
-			ChessBoardClass.InvalidMove();
+			_chessBoard.InvalidMove();
 			return;
 		}
 	}

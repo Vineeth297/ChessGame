@@ -1,5 +1,3 @@
-	using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class King : MonoBehaviour, IPieceMover
@@ -7,11 +5,7 @@ public class King : MonoBehaviour, IPieceMover
 	private ChessBoardClass _chessBoard;
 	private void Start() => _chessBoard = ChessBoardClass.ChessBoard;
 
-	public void MoveThePiece(GameObject finalCheckBox)
-	{
-		print("KnightMoved");
-		KingMove(finalCheckBox);
-	}
+	public void MoveThePiece(GameObject finalCheckBox) => KingMove(finalCheckBox);
 
 	private void KingMove(GameObject finalCheckBox)
 	{
@@ -46,7 +40,7 @@ public class King : MonoBehaviour, IPieceMover
 		}
 		else
 		{
-			ChessBoardClass.InvalidMove();
+			_chessBoard.InvalidMove();
 		}
 		
 	}

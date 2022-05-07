@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Pawn : MonoBehaviour,IPieceMover
@@ -7,11 +5,7 @@ public class Pawn : MonoBehaviour,IPieceMover
 	private ChessBoardClass _chessBoard;
     private void Start() => _chessBoard = ChessBoardClass.ChessBoard;
 
-	public void MoveThePiece(GameObject finalCheckBox)
-	{
-		print("PawnMoved");
-		PawnMove(finalCheckBox);
-	}
+	public void MoveThePiece(GameObject finalCheckBox) => PawnMove(finalCheckBox);
 
 	private void PawnMove(GameObject finalCheckBox)
 	{
@@ -51,6 +45,6 @@ public class Pawn : MonoBehaviour,IPieceMover
 			_chessBoard.MoveOrKillTheEnemy(finalCheckBox.transform);
 		}
 		else
-			ChessBoardClass.InvalidMove();
+			_chessBoard.InvalidMove();
 	}
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,22 +9,35 @@ public class ChessBoardClass : MonoBehaviour
 	public List<GameObject> checkBoxes;
 	public List<List<GameObject>> checkBoxPositions;
 
+	[SerializeField] private GameObject whitePawn;
+	[SerializeField] private GameObject whiteRook;
+	[SerializeField] private GameObject whiteKnight;
+	[SerializeField] private GameObject whiteBishop;
+	[SerializeField] private GameObject whiteQueen;
+	[SerializeField] private GameObject whiteKing;
+
+	private void OnEnable()
+	{
+		checkBoxPositions = new List<List<GameObject>>();
+		SetUpTheCheckBoxes();
+		ArrangeThePieces();
+	}
+
 	private void Awake()
 	{
+		#region Singleton
+		
 		if(ChessBoard)
 			Destroy(gameObject);
 		else
 		{
 			ChessBoard = this;
 		}
-	}
-	private void Start()
-	{
-		checkBoxPositions = new List<List<GameObject>>();
-		FillTheBoxes();
+		
+		#endregion
 	}
 	
-	private void FillTheBoxes()
+	private void SetUpTheCheckBoxes()
 	{
 		for (var i = 0; i < 8; i++)
 		{
@@ -112,5 +124,52 @@ public class ChessBoardClass : MonoBehaviour
 			InvalidMove();
 	}
 
-	public static void InvalidMove() => print("Invalid Move");
+	public void InvalidMove()
+	{
+		print("Invalid Move");
+		playerInput.selectedTransform = null;
+		playerInput.finalTransform = null;
+	}
+
+	private void ArrangeThePieces()
+	{
+		for (var i = 0; i < 8; i++)
+		{
+			var pawnWhite = Instantiate(whitePawn);
+			pawnWhite.transform.position = checkBoxPositions[1][i].transform.GetChild(0).position;
+			pawnWhite.transform.parent = checkBoxPositions[1][i].transform;
+		}
+
+		var rookWhite1 = Instantiate(whiteRook);
+		rookWhite1.transform.position = checkBoxPositions[0][0].transform.GetChild(0).position;
+		rookWhite1.transform.parent = checkBoxPositions[0][0].transform;
+		
+		var rookWhite2 = Instantiate(whiteRook);
+		rookWhite2.transform.position = checkBoxPositions[0][7].transform.GetChild(0).position;
+		rookWhite2.transform.parent = checkBoxPositions[0][7].transform;
+
+		var knightWhite1 = Instantiate(whiteKnight);
+		knightWhite1.transform.position = checkBoxPositions[0][1].transform.GetChild(0).position;
+		knightWhite1.transform.parent = checkBoxPositions[0][1].transform;
+		
+		var knightWhite2 = Instantiate(whiteKnight);
+		knightWhite2.transform.position = checkBoxPositions[0][6].transform.GetChild(0).position;
+		knightWhite2.transform.parent = checkBoxPositions[0][6].transform;
+		
+		var bishopWhite1 = Instantiate(whiteBishop);
+		bishopWhite1.transform.position = checkBoxPositions[0][2].transform.GetChild(0).position;
+		bishopWhite1.transform.parent = checkBoxPositions[0][2].transform;
+
+		var bishopWhite2 = Instantiate(whiteBishop);
+		bishopWhite2.transform.position = checkBoxPositions[0][5].transform.GetChild(0).position;
+		bishopWhite2.transform.parent = checkBoxPositions[0][5].transform;
+		
+		var queenWhite = Instantiate(whiteQueen);
+		queenWhite.transform.position = checkBoxPositions[0][3].transform.GetChild(0).position;
+		queenWhite.transform.parent = checkBoxPositions[0][3].transform;
+		
+		var kingWhite = Instantiate(whiteKing);
+		kingWhite.transform.position = checkBoxPositions[0][4].transform.GetChild(0).position;
+		kingWhite.transform.parent = checkBoxPositions[0][4].transform;
+	}
 }

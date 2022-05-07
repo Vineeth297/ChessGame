@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public class PieceMoverScript : MonoBehaviour
 {
@@ -15,6 +11,7 @@ public class PieceMoverScript : MonoBehaviour
 
 	public bool pieceSelected;
 
+	
 	private void Start() => _camera = Camera.main;
 
 	private void Update()
@@ -46,6 +43,7 @@ public class PieceMoverScript : MonoBehaviour
 		if (pieceSelected) return;
 		if (!hit.collider.CompareTag("WhitePiece") && !hit.collider.CompareTag("BlackPiece")) return;
 		selectedTransform = hit.collider.gameObject.transform;
+		selectedTransform.parent.GetComponent<MeshRenderer>().material.color = Color.yellow;
 		pieceSelected = !pieceSelected;
 	}
 }
