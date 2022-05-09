@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class ChessBoardClass : MonoBehaviour
@@ -93,7 +94,8 @@ public class ChessBoardClass : MonoBehaviour
 
 	private void MoveThePiece(Transform finalMove)
 	{
-		playerInput.selectedTransform.position = finalMove.GetChild(0).position;
+		//playerInput.selectedTransform.position = finalMove.GetChild(0).position;
+		playerInput.selectedTransform.DOMove(finalMove.GetChild(0).position,1.5f);
 		playerInput.selectedTransform.parent.GetComponent<CheckBox>().isOccupied = false;
 		playerInput.selectedTransform.parent.GetComponent<CheckBox>().CheckBoxDeSelected();
 		playerInput.selectedTransform.parent.GetComponent<CheckBox>().isPieceWhite = false;
@@ -116,7 +118,8 @@ public class ChessBoardClass : MonoBehaviour
 			if (playerInput.selectedTransform.parent.GetComponent<CheckBox>().isPieceWhite !=
 			    playerInput.finalTransform.GetComponent<CheckBox>().isPieceWhite)
 			{
-				playerInput.selectedTransform.position = finalMove.GetChild(0).position;
+				// playerInput.selectedTransform.position = finalMove.GetChild(0).position;
+				playerInput.selectedTransform.DOMove(finalMove.GetChild(0).position,1.5f);
 				playerInput.selectedTransform.parent.GetComponent<CheckBox>().isOccupied = false;
 				playerInput.selectedTransform.parent.GetComponent<CheckBox>().CheckBoxDeSelected();
 				playerInput.selectedTransform.parent.GetComponent<CheckBox>().isPieceWhite = false;
@@ -221,4 +224,5 @@ public class ChessBoardClass : MonoBehaviour
 		kingBlack.transform.position = checkBoxPositions[7][4].transform.GetChild(0).position;
 		kingBlack.transform.parent = checkBoxPositions[7][4].transform;
 	}
+	
 }
