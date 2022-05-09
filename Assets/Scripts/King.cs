@@ -9,7 +9,9 @@ public class King : MonoBehaviour, IPieceMover
 
 	private void KingMove(GameObject finalCheckBox)
 	{
-		_chessBoard.SearchTheBoard(out var currentRow,out var currentColumn,_chessBoard.playerInput.selectedTransform.parent.gameObject);
+		_chessBoard.SearchTheBoard(out var currentRow,out var currentColumn,
+			_chessBoard.playerInput.selectedTransform.parent.gameObject);
+		
 		if (currentRow == -1 || currentColumn == -1)
 		{
 			print("Index Not Found!!");

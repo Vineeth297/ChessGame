@@ -30,20 +30,28 @@ public class PieceMoverScript : MonoBehaviour
 		if (!Physics.Raycast(ray, out var hit, 50f, layerMask)) return;
 		if (pieceSelected)
 		{
-			if (hit.collider.CompareTag("WhitePiece") || hit.collider.CompareTag("BlackPiece")) return;
-			finalTransform = hit.collider.transform;
-			//SoldierFunction(finalTransform);
-			//Soldier(finalTransform.gameObject);
+			//if (hit.collider.CompareTag("WhitePiece") || hit.collider.CompareTag("BlackPiece")) return;
+			if (hit.collider.CompareTag("WhitePiece") || hit.collider.CompareTag("BlackPiece"))
+			{
+				if (hit.collider.transform == selectedTransform) return;
+				finalTransform = hit.collider.transform.parent;
+			}
+			else
+			{
+				pieceSelected = !pieceSelected;
+				finalTransform = hit.collider.transform;
+			}
+			
 			var chessPiece = selectedTransform.GetComponent<IPieceMover>();
 			chessPiece?.MoveThePiece(finalTransform.gameObject);
 			print(chessPiece);
-			//selectedTransform.GetComponent<Pawn>().MoveThePiece(finalTransform.gameObject);
 		}
 
 		if (pieceSelected) return;
+		
 		if (!hit.collider.CompareTag("WhitePiece") && !hit.collider.CompareTag("BlackPiece")) return;
 		selectedTransform = hit.collider.gameObject.transform;
-		selectedTransform.parent.GetComponent<MeshRenderer>().material.color = Color.yellow;
+		selectedTransform.parent.GetComponent<CheckBox>().CheckBoxSelected();
 		pieceSelected = !pieceSelected;
 	}
 }

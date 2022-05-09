@@ -9,6 +9,7 @@ public class ChessBoardClass : MonoBehaviour
 	public List<GameObject> checkBoxes;
 	public List<List<GameObject>> checkBoxPositions;
 
+	[Header("WHITE PIECES")]
 	[SerializeField] private GameObject whitePawn;
 	[SerializeField] private GameObject whiteRook;
 	[SerializeField] private GameObject whiteKnight;
@@ -16,6 +17,14 @@ public class ChessBoardClass : MonoBehaviour
 	[SerializeField] private GameObject whiteQueen;
 	[SerializeField] private GameObject whiteKing;
 
+	[Header("BLACK PIECES")]
+	[SerializeField] private GameObject blackPawn;
+	[SerializeField] private GameObject blackRook;
+	[SerializeField] private GameObject blackKnight;
+	[SerializeField] private GameObject blackBishop;
+	[SerializeField] private GameObject blackQueen;
+	[SerializeField] private GameObject blackKing;
+	
 	private void OnEnable()
 	{
 		checkBoxPositions = new List<List<GameObject>>();
@@ -86,6 +95,7 @@ public class ChessBoardClass : MonoBehaviour
 	{
 		playerInput.selectedTransform.position = finalMove.GetChild(0).position;
 		playerInput.selectedTransform.parent.GetComponent<CheckBox>().isOccupied = false;
+		playerInput.selectedTransform.parent.GetComponent<CheckBox>().CheckBoxDeSelected();
 		playerInput.selectedTransform.parent.GetComponent<CheckBox>().isPieceWhite = false;
 		playerInput.pieceSelected = !playerInput.pieceSelected;
 		playerInput.selectedTransform.parent = finalMove;
@@ -108,6 +118,7 @@ public class ChessBoardClass : MonoBehaviour
 			{
 				playerInput.selectedTransform.position = finalMove.GetChild(0).position;
 				playerInput.selectedTransform.parent.GetComponent<CheckBox>().isOccupied = false;
+				playerInput.selectedTransform.parent.GetComponent<CheckBox>().CheckBoxDeSelected();
 				playerInput.selectedTransform.parent.GetComponent<CheckBox>().isPieceWhite = false;
 				playerInput.finalTransform.GetComponent<CheckBox>().isPieceWhite = 
 					playerInput.selectedTransform.CompareTag("WhitePiece");
@@ -127,6 +138,7 @@ public class ChessBoardClass : MonoBehaviour
 	public void InvalidMove()
 	{
 		print("Invalid Move");
+		playerInput.selectedTransform.parent.GetComponent<CheckBox>().CheckBoxDeSelected();
 		playerInput.selectedTransform = null;
 		playerInput.finalTransform = null;
 	}
@@ -138,6 +150,10 @@ public class ChessBoardClass : MonoBehaviour
 			var pawnWhite = Instantiate(whitePawn);
 			pawnWhite.transform.position = checkBoxPositions[1][i].transform.GetChild(0).position;
 			pawnWhite.transform.parent = checkBoxPositions[1][i].transform;
+			
+			var pawnBlack = Instantiate(blackPawn);
+			pawnBlack.transform.position = checkBoxPositions[6][i].transform.GetChild(0).position;
+			pawnBlack.transform.parent = checkBoxPositions[6][i].transform;
 		}
 
 		var rookWhite1 = Instantiate(whiteRook);
@@ -171,5 +187,38 @@ public class ChessBoardClass : MonoBehaviour
 		var kingWhite = Instantiate(whiteKing);
 		kingWhite.transform.position = checkBoxPositions[0][4].transform.GetChild(0).position;
 		kingWhite.transform.parent = checkBoxPositions[0][4].transform;
+		
+		//Black Pieces
+		var rookBlack1 = Instantiate(blackRook);
+		rookBlack1.transform.position = checkBoxPositions[7][0].transform.GetChild(0).position;
+		rookBlack1.transform.parent = checkBoxPositions[7][0].transform;
+		
+		var rookBlack2 = Instantiate(blackRook);
+		rookBlack2.transform.position = checkBoxPositions[7][7].transform.GetChild(0).position;
+		rookBlack2.transform.parent = checkBoxPositions[7][7].transform;
+
+		var knightBlack1 = Instantiate(blackKnight);
+		knightBlack1.transform.position = checkBoxPositions[7][1].transform.GetChild(0).position;
+		knightBlack1.transform.parent = checkBoxPositions[7][1].transform;
+		
+		var knightBlack2 = Instantiate(blackKnight);
+		knightBlack2.transform.position = checkBoxPositions[7][6].transform.GetChild(0).position;
+		knightBlack2.transform.parent = checkBoxPositions[7][6].transform;
+		
+		var bishopBlack1 = Instantiate(blackBishop);
+		bishopBlack1.transform.position = checkBoxPositions[7][2].transform.GetChild(0).position;
+		bishopBlack1.transform.parent = checkBoxPositions[7][2].transform;
+
+		var bishopBlack2 = Instantiate(blackBishop);
+		bishopBlack2.transform.position = checkBoxPositions[7][5].transform.GetChild(0).position;
+		bishopBlack2.transform.parent = checkBoxPositions[7][5].transform;
+		
+		var queenBlack = Instantiate(blackQueen);
+		queenBlack.transform.position = checkBoxPositions[7][3].transform.GetChild(0).position;
+		queenBlack.transform.parent = checkBoxPositions[7][3].transform;
+		
+		var kingBlack = Instantiate(blackKing);
+		kingBlack.transform.position = checkBoxPositions[7][4].transform.GetChild(0).position;
+		kingBlack.transform.parent = checkBoxPositions[7][4].transform;
 	}
 }

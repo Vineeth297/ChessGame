@@ -3,26 +3,36 @@ using UnityEngine;
 public class Pawn : MonoBehaviour,IPieceMover
 {
 	private ChessBoardClass _chessBoard;
+
+	private int _validMove;
     private void Start() => _chessBoard = ChessBoardClass.ChessBoard;
 
-	public void MoveThePiece(GameObject finalCheckBox) => PawnMove(finalCheckBox);
+    public void MoveThePiece(GameObject finalCheckBox) => PawnMove(finalCheckBox);
 
 	private void PawnMove(GameObject finalCheckBox)
 	{
 		//Get the CurrentIndex
-		_chessBoard.SearchTheBoard(out var currentRow,out var currentColumn,_chessBoard.playerInput.selectedTransform.parent.gameObject);
+		_chessBoard.SearchTheBoard(out var currentRow,out var currentColumn,
+			_chessBoard.playerInput.selectedTransform.parent.gameObject);
+		
 		if (currentRow == -1 || currentColumn == -1)
 		{
 			print("Index Not Found!!");
 			return;
 		}
 
-		var validMoveRow = currentRow + 1;
+		int validMoveRow;
+		if (CompareTag("WhitePiece"))
+			validMoveRow = currentRow + 1;
+		else
+			validMoveRow = currentRow - 1;
+		
 		var validMoveColumn = currentColumn;
-		var killMove1Row = currentRow + 1;
+		var killMove1Row = validMoveRow;
 		var killMove1Column = currentColumn - 1;
-		var killMove2Row = currentRow + 1;
+		var killMove2Row = validMoveRow;
 		var killMove2Column = currentColumn + 1;
+
 		
 		//Check whether the final move checkbox index is valid
 		//if valid => move
