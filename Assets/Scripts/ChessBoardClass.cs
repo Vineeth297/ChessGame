@@ -92,7 +92,7 @@ public class ChessBoardClass : MonoBehaviour
 			MoveOrKillTheEnemy(finalMove);
 	}
 
-	private void MoveThePiece(Transform finalMove)
+	public void MoveThePiece(Transform finalMove)
 	{
 		//playerInput.selectedTransform.position = finalMove.GetChild(0).position;
 		playerInput.selectedTransform.DOMove(finalMove.GetChild(0).position,1.5f);
