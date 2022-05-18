@@ -35,10 +35,12 @@ public class PieceMoverScript : MonoBehaviour
 			{
 				if (hit.collider.transform == selectedTransform) return;
 				finalTransform = hit.collider.transform.parent;
+				print("Here");
 			}
 			else
 			{
-				pieceSelected = !pieceSelected;
+				print("Here 1");
+			//	pieceSelected = !pieceSelected;
 				finalTransform = hit.collider.transform;
 			}
 			
@@ -52,6 +54,13 @@ public class PieceMoverScript : MonoBehaviour
 		if (!hit.collider.CompareTag("WhitePiece") && !hit.collider.CompareTag("BlackPiece")) return;
 		selectedTransform = hit.collider.gameObject.transform;
 		selectedTransform.parent.GetComponent<CheckBox>().CheckBoxSelected();
+		pieceSelected = !pieceSelected;
+	}
+
+	public void ClearPlayerInput()
+	{
+		selectedTransform = null;
+		finalTransform = null;
 		pieceSelected = !pieceSelected;
 	}
 }

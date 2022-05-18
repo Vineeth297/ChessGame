@@ -95,19 +95,21 @@ public class ChessBoardClass : MonoBehaviour
 	public void MoveThePiece(Transform finalMove)
 	{
 		//playerInput.selectedTransform.position = finalMove.GetChild(0).position;
-		playerInput.selectedTransform.DOMove(finalMove.GetChild(0).position,1.5f);
-		playerInput.selectedTransform.parent.GetComponent<CheckBox>().isOccupied = false;
-		playerInput.selectedTransform.parent.GetComponent<CheckBox>().CheckBoxDeSelected();
-		playerInput.selectedTransform.parent.GetComponent<CheckBox>().isPieceWhite = false;
-		playerInput.pieceSelected = !playerInput.pieceSelected;
+		var selectedTransform = playerInput.selectedTransform;
+		var selectedTransformCheckBox = selectedTransform.parent.GetComponent<CheckBox>();
+		var finalTransform = playerInput.finalTransform;
+		var finalTransformCheckBox = finalTransform.GetComponent<CheckBox>();
+		
+		selectedTransform.DOMove(finalMove.GetChild(0).position,1.5f);
+		selectedTransformCheckBox.isOccupied = false;
+		selectedTransformCheckBox.CheckBoxDeSelected();
+		selectedTransformCheckBox.isPieceWhite = false;
 		playerInput.selectedTransform.parent = finalMove;
 		finalMove.GetComponent<CheckBox>().isOccupied = true;
-		
-		playerInput.finalTransform.GetComponent<CheckBox>().isPieceWhite = 
-			playerInput.selectedTransform.CompareTag("WhitePiece");
-		
-		playerInput.selectedTransform = null;
-		playerInput.finalTransform = null;
+
+		finalTransformCheckBox.isPieceWhite = playerInput.selectedTransform.CompareTag("WhitePiece");
+
+		playerInput.ClearPlayerInput();
 	}
 
 	public void MoveOrKillTheEnemy(Transform finalMove)
@@ -115,20 +117,24 @@ public class ChessBoardClass : MonoBehaviour
 		if (finalMove.childCount == 2)
 		{
 			//if the target piece is not of same color => kill
-			if (playerInput.selectedTransform.parent.GetComponent<CheckBox>().isPieceWhite !=
-			    playerInput.finalTransform.GetComponent<CheckBox>().isPieceWhite)
+			var selectedTransform = playerInput.selectedTransform;
+			var selectedTransformCheckBox = selectedTransform.parent.GetComponent<CheckBox>();
+			var finalTransform = playerInput.finalTransform;
+			var finalTransformCheckBox = finalTransform.GetComponent<CheckBox>();
+			
+			if (selectedTransformCheckBox.isPieceWhite != finalTransformCheckBox.isPieceWhite)
 			{
 				// playerInput.selectedTransform.position = finalMove.GetChild(0).position;
-				playerInput.selectedTransform.DOMove(finalMove.GetChild(0).position,1.5f);
-				playerInput.selectedTransform.parent.GetComponent<CheckBox>().isOccupied = false;
-				playerInput.selectedTransform.parent.GetComponent<CheckBox>().CheckBoxDeSelected();
-				playerInput.selectedTransform.parent.GetComponent<CheckBox>().isPieceWhite = false;
-				playerInput.finalTransform.GetComponent<CheckBox>().isPieceWhite = 
-					playerInput.selectedTransform.CompareTag("WhitePiece");
+				selectedTransform.DOMove(finalMove.GetChild(0).position,1.5f);
+				selectedTransformCheckBox.isOccupied = false;
+				selectedTransformCheckBox.CheckBoxDeSelected();
+				selectedTransformCheckBox.isPieceWhite = false;
+				selectedTransform.parent = finalMove;
+				
+				finalTransformCheckBox.isPieceWhite = selectedTransform.CompareTag("WhitePiece");
 				playerInput.pieceSelected = !playerInput.pieceSelected;
-				playerInput.finalTransform.GetChild(1).gameObject.SetActive(false);
-				playerInput.finalTransform.GetChild(1).parent = null;
-				playerInput.selectedTransform.parent = finalMove;
+				finalTransform.GetChild(1).gameObject.SetActive(false);
+				finalTransform.GetChild(1).parent = null;
 			}
 			else
 				InvalidMove();
@@ -137,13 +143,13 @@ public class ChessBoardClass : MonoBehaviour
 		else
 			InvalidMove();
 	}
+	
 
 	public void InvalidMove()
 	{
 		print("Invalid Move");
 		playerInput.selectedTransform.parent.GetComponent<CheckBox>().CheckBoxDeSelected();
-		playerInput.selectedTransform = null;
-		playerInput.finalTransform = null;
+		playerInput.ClearPlayerInput();
 	}
 
 	private void ArrangeThePieces()

@@ -41,5 +41,7 @@ public class Knight : MonoBehaviour, IPieceMover
             //check occupancy and Move
             _chessBoard.ValidateOccupancyAndMove(finalCheckBox.transform);
         }
+		else
+			_chessBoard.InvalidMove();
     }
 }
