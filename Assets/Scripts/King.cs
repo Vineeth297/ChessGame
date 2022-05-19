@@ -1,3 +1,4 @@
+using System;
 using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using UnityEngine;
 
@@ -41,9 +42,9 @@ public class King : MonoBehaviour, IPieceMover
 			return;
 		}
 
-		if (finalRow == 0 && finalColumn == 7)
+		if (finalRow == 0 && finalColumn == 6)
 		{
-			KingSlideMove(finalCheckBox, finalRow, finalColumn);
+			KingSlideMove(finalCheckBox,currentColumn, finalRow, finalColumn);
 			return;
 		}
 		if (finalRow == currentRow - 1 && finalColumn == currentColumn - 1 ||
@@ -67,10 +68,12 @@ public class King : MonoBehaviour, IPieceMover
 		}
 	}
 
-	private void KingSlideMove(GameObject finalCheckBox,int finalRow,int finalColumn)
+	private void KingSlideMove(GameObject finalCheckBox,int currentColumn,int finalRow,int finalColumn)
 	{
+		//if final position is [0][6]
 		//Rook's position must be [0][7] for white or [7][7] for black
-		var maxIteration = Mathf.Abs(_kingsColumn - finalColumn);
+		//current kings position must be [0][4]
+		/*var maxIteration = Mathf.Abs(_kingsColumn - finalColumn);
 		var stepCount = 0;
 		for (var iteration = 1; iteration < maxIteration; iteration++)
 		{
@@ -84,8 +87,13 @@ public class King : MonoBehaviour, IPieceMover
 				_chessBoard.InvalidMove();
 				return;
 			}
-		}
-		if (stepCount == 2)
+		}*/
+
+		var emptyColumn1 = currentColumn + 1;
+		var emptyColumn2 = currentColumn + 2;
+		var checkBox1 = _chessBoard.checkBoxPositions[finalRow][emptyColumn1];
+		var checkBox2 = _chessBoard.checkBoxPositions[finalRow][ emptyColumn2];
+		if (!checkBox1.GetComponent<CheckBox>().isOccupied && !checkBox2.GetComponent<CheckBox>().isOccupied)
 		{
 			var kingsFinalCheckBox = _chessBoard.checkBoxPositions[0][6];
 			var rooksFinalCheckBox = _chessBoard.checkBoxPositions[0][5];
@@ -99,7 +107,19 @@ public class King : MonoBehaviour, IPieceMover
 			
 			_chessBoard.playerInput.selectedTransform = null;
 			_chessBoard.playerInput.finalTransform = null;
+			
+			
+			
+			/*if (stepCount == 2)
+			{
+				
+			}*/
 		}
+		else
+		{
+			_chessBoard.InvalidMove();
+		}
+		
 	}
 	private void QueenSlideMove(GameObject finalCheckBox)
 	{

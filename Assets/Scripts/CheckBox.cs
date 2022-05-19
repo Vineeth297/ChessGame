@@ -18,13 +18,9 @@ public class CheckBox : MonoBehaviour
 		isPieceWhite = transform.GetChild(1).CompareTag("WhitePiece");
 	}
 
-	public void CheckBoxSelected()
-	{
-		mesh.material.color = Color.yellow;
-	}
+	public void CheckBoxSelected() => mesh.material.color = Color.yellow;
 
-	public void CheckBoxDeSelected()
-	{
-		mesh.material.color = defaultCheckBoxColor;
-	}
+	public void CheckBoxDeSelected() => mesh.material.color = defaultCheckBoxColor;
+
+	public void ResetOccupancy() => isOccupied = !isOccupied;
 }
