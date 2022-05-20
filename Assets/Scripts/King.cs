@@ -44,7 +44,7 @@ public class King : MonoBehaviour, IPieceMover
 
 		if (finalRow == 0 && finalColumn == 6)
 		{
-			KingSlideMove(finalCheckBox,currentColumn, finalRow, finalColumn);
+			KingSlideMove(finalCheckBox, currentRow, currentColumn, finalRow, finalColumn);
 			return;
 		}
 		if (finalRow == currentRow - 1 && finalColumn == currentColumn - 1 ||
@@ -68,28 +68,13 @@ public class King : MonoBehaviour, IPieceMover
 		}
 	}
 
-	private void KingSlideMove(GameObject finalCheckBox,int currentColumn,int finalRow,int finalColumn)
+	private void KingSlideMove(GameObject finalCheckBox,int currentRow,int currentColumn,int finalRow,int finalColumn)
 	{
 		//if final position is [0][6]
 		//Rook's position must be [0][7] for white or [7][7] for black
 		//current kings position must be [0][4]
-		/*var maxIteration = Mathf.Abs(_kingsColumn - finalColumn);
-		var stepCount = 0;
-		for (var iteration = 1; iteration < maxIteration; iteration++)
-		{
-			var checkBox = _chessBoard.checkBoxPositions[finalRow][_kingsColumn + iteration];
-			if (!checkBox.GetComponent<CheckBox>().isOccupied)
-			{
-				stepCount += 1;
-			}
-			else
-			{
-				_chessBoard.InvalidMove();
-				return;
-			}
-		}*/
 
-		var emptyColumn1 = currentColumn + 1;
+		/*var emptyColumn1 = currentColumn + 1;
 		var emptyColumn2 = currentColumn + 2;
 		var checkBox1 = _chessBoard.checkBoxPositions[finalRow][emptyColumn1];
 		var checkBox2 = _chessBoard.checkBoxPositions[finalRow][ emptyColumn2];
@@ -113,13 +98,46 @@ public class King : MonoBehaviour, IPieceMover
 			/*if (stepCount == 2)
 			{
 				
-			}*/
+			}#1#
 		}
 		else
 		{
 			_chessBoard.InvalidMove();
 		}
+		*/
+
+		var maxIterations = Mathf.Abs(finalColumn - currentColumn);
+		var stepCount = 0;
+		for (var iteration = 1; iteration < maxIterations; iteration++)
+		{
+			var checkBox = _chessBoard.checkBoxPositions[currentRow][currentColumn + iteration];
+			if (!checkBox.GetComponent<CheckBox>().isOccupied) stepCount++;
+			else
+			{
+				_chessBoard.InvalidMove();
+				return;
+			}
+		}
 		
+		if (stepCount == 2)
+		{
+			//check if piece at [0][7] is a rook and if of same color of the king
+			var rookInitialCheckBox = _chessBoard.checkBoxPositions[currentRow][7];
+			var rookComponent = rookInitialCheckBox.transform.GetChild(1).GetComponent<Rook>();
+			if (rookComponent.isRook)
+			{
+				stepCount++;
+			}
+
+			//Move King To [0][6]
+			//update occupancy and piece white bools
+
+			//Move Rook To [0][5]
+			//update occupancy and piece white bools
+
+			//update occupancy and piece white bools on [0][7]
+
+		}
 	}
 	private void QueenSlideMove(GameObject finalCheckBox)
 	{

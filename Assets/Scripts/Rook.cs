@@ -3,8 +3,16 @@ using UnityEngine;
 public class Rook : MonoBehaviour,IPieceMover
 {
 	private ChessBoardClass _chessBoard;
-	private void Start() => _chessBoard = ChessBoardClass.ChessBoard;
+
+	public bool isRook;
 	
+	private void Start()
+	{
+		_chessBoard = ChessBoardClass.ChessBoard;
+		isRook = true;
+	}
+
+
 	public void MoveThePiece(GameObject finalCheckBox) => RookMove(finalCheckBox);
 
 	private void RookMove(GameObject finalCheckBox)
