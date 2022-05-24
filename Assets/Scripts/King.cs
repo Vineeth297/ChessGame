@@ -108,7 +108,7 @@ public class King : MonoBehaviour, IPieceMover
 
 		var maxIterations = Mathf.Abs(finalColumn - currentColumn);
 		var stepCount = 0;
-		for (var iteration = 1; iteration < maxIterations; iteration++)
+		for (var iteration = 1; iteration <= maxIterations; iteration++)
 		{
 			var checkBox = _chessBoard.checkBoxPositions[currentRow][currentColumn + iteration];
 			if (!checkBox.GetComponent<CheckBox>().isOccupied) stepCount++;
@@ -117,16 +117,21 @@ public class King : MonoBehaviour, IPieceMover
 				_chessBoard.InvalidMove();
 				return;
 			}
+			print("In FOr Loop");
+			print(stepCount);
+
 		}
 		
 		if (stepCount == 2)
 		{
 			//check if piece at [0][7] is a rook and if of same color of the king
 			var rookInitialCheckBox = _chessBoard.checkBoxPositions[currentRow][7];
+			var rookFinalCheckBox = _chessBoard.checkBoxPositions[currentRow][finalColumn - 1];
+			var rook = rookInitialCheckBox.transform.GetChild(1).gameObject;
 			var rookComponent = rookInitialCheckBox.transform.GetChild(1).GetComponent<Rook>();
 			if (rookComponent.isRook)
 			{
-				stepCount++;
+				_chessBoard.ValidateOccupancyAndMove(finalCheckBox.transform);
 			}
 
 			//Move King To [0][6]
