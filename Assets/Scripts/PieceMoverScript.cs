@@ -10,7 +10,6 @@ public class PieceMoverScript : MonoBehaviour
 	public Transform finalTransform;
 
 	public bool pieceSelected;
-
 	
 	private void Start() => _camera = Camera.main;
 
@@ -18,7 +17,7 @@ public class PieceMoverScript : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		
-		if (!Input.GetMouseButtonDown(0)) return;
+		if (!InputHandler.GetFingerDown()) return;
 		
 		SelectThePiece();
 	}
