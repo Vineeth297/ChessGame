@@ -154,6 +154,18 @@ public class ChessBoardClass : MonoBehaviour
 
 	private void ArrangeThePieces()
 	{
+		/* Spawn All the Pawns */
+		SpawnAllThePawns();
+
+		/* White Pieces */
+		SpawnWhitePieces();
+		
+		/* Black Pieces */
+		SpawnBlackPieces();
+	}
+
+	private void SpawnAllThePawns()
+	{
 		for (var i = 0; i < 8; i++)
 		{
 			var pawnWhite = Instantiate(whitePawn);
@@ -164,7 +176,10 @@ public class ChessBoardClass : MonoBehaviour
 			pawnBlack.transform.position = checkBoxPositions[6][i].transform.GetChild(0).position;
 			pawnBlack.transform.parent = checkBoxPositions[6][i].transform;
 		}
-
+	}
+	
+	private void SpawnWhitePieces()
+	{
 		var rookWhite1 = Instantiate(whiteRook);
 		rookWhite1.transform.position = checkBoxPositions[0][0].transform.GetChild(0).position;
 		rookWhite1.transform.parent = checkBoxPositions[0][0].transform;
@@ -196,8 +211,10 @@ public class ChessBoardClass : MonoBehaviour
 		var kingWhite = Instantiate(whiteKing);
 		kingWhite.transform.position = checkBoxPositions[0][4].transform.GetChild(0).position;
 		kingWhite.transform.parent = checkBoxPositions[0][4].transform;
-		
-		//Black Pieces
+	}
+
+	private void SpawnBlackPieces()
+	{
 		var rookBlack1 = Instantiate(blackRook);
 		rookBlack1.transform.position = checkBoxPositions[7][0].transform.GetChild(0).position;
 		rookBlack1.transform.parent = checkBoxPositions[7][0].transform;
@@ -230,5 +247,4 @@ public class ChessBoardClass : MonoBehaviour
 		kingBlack.transform.position = checkBoxPositions[7][4].transform.GetChild(0).position;
 		kingBlack.transform.parent = checkBoxPositions[7][4].transform;
 	}
-	
 }

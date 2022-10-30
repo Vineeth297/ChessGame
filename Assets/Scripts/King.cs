@@ -1,5 +1,3 @@
-using System;
-using Palmmedia.ReportGenerator.Core.Parser.Analysis;
 using UnityEngine;
 
 public class King : MonoBehaviour, IPieceMover
@@ -73,38 +71,6 @@ public class King : MonoBehaviour, IPieceMover
 		//if final position is [0][6]
 		//Rook's position must be [0][7] for white or [7][7] for black
 		//current kings position must be [0][4]
-
-		/*var emptyColumn1 = currentColumn + 1;
-		var emptyColumn2 = currentColumn + 2;
-		var checkBox1 = _chessBoard.checkBoxPositions[finalRow][emptyColumn1];
-		var checkBox2 = _chessBoard.checkBoxPositions[finalRow][ emptyColumn2];
-		if (!checkBox1.GetComponent<CheckBox>().isOccupied && !checkBox2.GetComponent<CheckBox>().isOccupied)
-		{
-			var kingsFinalCheckBox = _chessBoard.checkBoxPositions[0][6];
-			var rooksFinalCheckBox = _chessBoard.checkBoxPositions[0][5];
-			_chessBoard.MoveThePiece(kingsFinalCheckBox.transform);
-			finalCheckBox.transform.GetChild(1).transform.position = rooksFinalCheckBox.transform.GetChild(0).position;
-			finalCheckBox.transform.GetComponent<CheckBox>().isOccupied = false;
-			finalCheckBox.transform.GetComponent<CheckBox>().CheckBoxDeSelected();
-			finalCheckBox.transform.GetComponent<CheckBox>().isPieceWhite = false;
-			_chessBoard.playerInput.pieceSelected = !_chessBoard.playerInput.pieceSelected;
-			finalCheckBox.transform.GetChild(1).transform.parent = rooksFinalCheckBox.transform;
-			
-			_chessBoard.playerInput.selectedTransform = null;
-			_chessBoard.playerInput.finalTransform = null;
-			
-			
-			
-			/*if (stepCount == 2)
-			{
-				
-			}#1#
-		}
-		else
-		{
-			_chessBoard.InvalidMove();
-		}
-		*/
 
 		var maxIterations = Mathf.Abs(finalColumn - currentColumn);
 		var stepCount = 0;
